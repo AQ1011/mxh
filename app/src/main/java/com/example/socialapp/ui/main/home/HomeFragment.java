@@ -93,7 +93,6 @@ public class HomeFragment extends Fragment implements PostAdapter.onPostListener
 
         al.setView(View.inflate(this.getContext(),R.layout.dialog_add_post,null));
 
-
         MenuItem add = menu.add(0,0,0,"New post");
         add.setOnMenuItemClickListener(item -> {
             al.show();

@@ -2,8 +2,11 @@ package com.example.socialapp.data.model;
 
 import androidx.annotation.NonNull;
 
+import com.google.type.DateTime;
+
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Post {
     private String id;
@@ -11,10 +14,19 @@ public class Post {
     private String name;
     private String content;
     private ArrayList<String> imageUrl;
-    private String dateAdded;
+
+    public void setDateAdded(Date dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
+    public Date getDateAdded() {
+        return dateAdded;
+    }
+
+    private Date dateAdded;
 
     public Post (){
-        dateAdded = Calendar.getInstance().getTime().toString();
+        dateAdded = Calendar.getInstance().getTime();
         content ="";
         imageUrl = new ArrayList<String>();
     }

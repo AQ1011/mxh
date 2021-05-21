@@ -1,6 +1,7 @@
 package com.example.socialapp.crud;
 
 import com.example.socialapp.data.model.Post;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.auth.User;
 import com.google.firebase.storage.FirebaseStorage;
@@ -8,6 +9,7 @@ import com.google.firebase.storage.FirebaseStorage;
 public class UserActions {
     private FirebaseStorage storage = FirebaseStorage.getInstance();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     private static UserActions userActions;
 
@@ -18,15 +20,15 @@ public class UserActions {
         return userActions;
     }
 
-    public void addUser (Post post){
-        //TODO: implement add new (sign up)
+    public void addUser (String email, String password){
+        firebaseAuth.createUserWithEmailAndPassword(email, password);
     }
 
-    public void deleteUser (String postId){
+    public void deleteUser (String uid){
 
     }
 
-    public void updateUser (String postId){
+    public void updateUser (String uid){
 
     }
 
