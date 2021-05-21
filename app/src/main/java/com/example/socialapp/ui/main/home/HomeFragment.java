@@ -23,10 +23,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.socialapp.Facade;
 import com.example.socialapp.R;
+import com.example.socialapp.crud.PostActions;
 import com.example.socialapp.data.model.Post;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,7 +43,7 @@ import java.util.ArrayList;
 
 import static android.app.Activity.RESULT_OK;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment implements PostAdapter.onPostListener {
 
     private FirebaseFirestore db;
     private HomeViewModel homeViewModel;
@@ -50,6 +54,7 @@ public class HomeFragment extends Fragment {
     Uri imageUri;
     ImageView imageView;
     String picturePath;
+    Facade facade;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -58,7 +63,7 @@ public class HomeFragment extends Fragment {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
         homeViewModel.getPostsLiveData().observe(getViewLifecycleOwner(),postsUpdateObserver);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-
+        facade = Facade.getInstance();
         FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         db = FirebaseFirestore.getInstance();
 
@@ -70,7 +75,7 @@ public class HomeFragment extends Fragment {
     Observer<ArrayList<Post>> postsUpdateObserver = new Observer<ArrayList<Post>>() {
         @Override
         public void onChanged(ArrayList<Post> posts) {
-            postAdapter = new PostAdapter(posts);
+            postAdapter = new PostAdapter(posts, HomeFragment.this::onPostClick);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(postAdapter);
         }
@@ -119,7 +124,8 @@ public class HomeFragment extends Fragment {
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             p.setUserId(user.getUid());
                             p.setContent(ed_addPost.getText().toString());
-                            db.collection("posts").add(p);
+                            //TODO: do this please!!
+                            //facade.post
                             al.cancel();
                         });
                     });
@@ -157,5 +163,12 @@ public class HomeFragment extends Fragment {
                 }
             };
         }
+    }
+
+    @Override
+    public void onPostClick(int position) {
+        String postId = postAdapter.getPostId(position);
+        NavDirections action = HomeFragmentDirections.actionNavHomeToPostFragment().setPostId(postId);
+        Navigation.findNavController(getView()).navigate(action);
     }
 }

@@ -36,12 +36,18 @@ public class Post {
         this.userId = id;
     }
 
+    public String getPostId(){
+        return id;
+    }
     public String getImageUrl() {
+        if(imageUrl.isEmpty())
+            return "";
         return imageUrl.get(0);
     }
     public String getUserId() {
         return userId;
     }
+    public String getContent() { return content; }
     @NonNull
     @Override
     public String toString() {

@@ -27,9 +27,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     private ArrayList<Post> posts;
     private FirebaseFirestore db;
+    private onPostListener onPostListener;
 
-    public PostAdapter (ArrayList<Post> posts){
+    public PostAdapter (ArrayList<Post> posts, onPostListener onPostListener){
         this.posts = posts;
+        this.onPostListener = onPostListener;
     }
 
     @NonNull
@@ -39,13 +41,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_post, parent, false);
 
-        return new ViewHolder(view);
+        return new ViewHolder(view, onPostListener);
 
     }
 
     @Override
     public int getItemCount() {
         return posts.size();
+    }
+
+    public String getPostId(int position){
+        return posts.get(position).getPostId();
     }
 
     @Override
@@ -71,20 +77,25 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         final TextView contentText;
         final TextView userName;
         final ImageView imageView;
         final ImageView avatar;
 
-        public ViewHolder(@NonNull View itemView) {
+        onPostListener onPostListener;
+
+        public ViewHolder(@NonNull View itemView, onPostListener onPostListener) {
             super(itemView);
 
             contentText = itemView.findViewById(R.id.tv_post_content);
             imageView = itemView.findViewById(R.id.iv_post_image);
             avatar = itemView.findViewById(R.id.iv_post_avatar);
             userName = itemView.findViewById(R.id.tv_post_username);
+            this.onPostListener = onPostListener;
+
+            itemView.setOnClickListener(this);
         }
 
         public ImageView getImageView() {
@@ -102,9 +113,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public ImageView getAvatar() {
             return this.avatar;
         }
+
+        @Override
+        public void onClick(View v) {
+            onPostListener.onPostClick(getAdapterPosition());
+        }
     }
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+    public static class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
         public DownloadImageTask(ImageView bmImage) {
@@ -127,5 +143,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
         }
+    }
+
+    public interface onPostListener {
+        void onPostClick(int position);
     }
 }

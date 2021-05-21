@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_comment_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2.5dp"
+        android:text="username" />
+
+    <TextView
+        android:id="@+id/tv_comment_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="2.5dp"
+        android:paddingStart="20dp"
+        android:text="Hohohohohoho"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+        android:textSize="18sp" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

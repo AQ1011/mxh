@@ -40,7 +40,7 @@ public class HomeViewModel extends ViewModel {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
                                 Post p = new Post();
-                                p.setId(document.getString("content"));
+                                p.setId(document.getId());
                                 p.setContent(document.getString("content"));
                                 p.setUserId(document.getString("userId"));
                                 p.setImageUrl(document.get("imageUrl").toString());
