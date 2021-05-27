@@ -2,6 +2,7 @@ package com.example.socialapp.ui.main.home;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
@@ -75,6 +77,16 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         new DownloadImageTask(holder.getImageView())
                 .execute(posts.get(position).getImageUrl());
 
+    }
+
+    public static Drawable LoadImageFromWebOperations(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            return d;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

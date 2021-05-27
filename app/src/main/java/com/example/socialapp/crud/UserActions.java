@@ -21,7 +21,13 @@ public class UserActions {
     }
 
     public void addUser (String email, String password){
-        firebaseAuth.createUserWithEmailAndPassword(email, password);
+        firebaseAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
+            com.example.socialapp.data.model.User u = new com.example.socialapp.data.model.User();
+            u.setEmail(email);
+            u.setUid(authResult.getUser().getUid());
+            u.setDateAdded();
+            firestore.collection("users").add(u);
+        });
     }
 
     public void deleteUser (String uid){
@@ -35,4 +41,9 @@ public class UserActions {
     public void updatePassword (User user, String password) {
         //TODO: implement update user password
     }
+
+    public void signOut (){
+        firebaseAuth.signOut();
+    }
+
 }

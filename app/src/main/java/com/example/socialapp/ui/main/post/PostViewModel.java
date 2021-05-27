@@ -10,12 +10,14 @@ import com.example.socialapp.data.model.Comment;
 import com.example.socialapp.data.model.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.Source;
+import com.google.firestore.v1.Document;
 
 import java.util.ArrayList;
 
@@ -36,8 +38,8 @@ public class PostViewModel extends ViewModel {
         init();
     }
     private void init() {
-        DocumentReference docRef = db.collection("posts").document(postId);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        DocumentReference postRef = db.collection("posts").document(postId);
+        postRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                         if (task.isSuccessful()) {
@@ -53,27 +55,51 @@ public class PostViewModel extends ViewModel {
                         }
                     }
                 });
-        db.collection("comments").get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                if(document.getString("postId").equals(postId)) {
-                                    Comment c = new Comment();
-                                    c.setId(document.getId());
-                                    c.setContent(document.getString("content"));
-                                    c.setUserId(document.getString("userId"));
-                                    c.setPostId(document.getString("postId"));
-                                    comments.add(c);
-                                }
-                            }
-                            postCommentsLiveData.setValue(comments);
-                        } else {
-                            Log.w(TAG, "Error getting documents.", task.getException());
-                        }
-                    }
-                });
+//        db.collection("comments").whereEqualTo("postId", postId).get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot document : task.getResult()) {
+//                                    Comment c = new Comment();
+//                                    c.setId(document.getId());
+//                                    c.setContent(document.getString("content"));
+//                                    c.setUserId(document.getString("userId"));
+//                                    c.setPostId(document.getString("postId"));
+//                                    comments.add(c);
+//                            }
+//                            postCommentsLiveData.setValue(comments);
+//                        } else {
+//                            Log.w(TAG, "Error getting documents.", task.getException());
+//                        }
+//                    }
+//                });
+        db.collection("comments").whereEqualTo("postId", postId).addSnapshotListener((value, error) -> {
+            if (error != null) {
+                Log.w(TAG, "listen:error", error);
+                return;
+            }
+            for (DocumentChange dc : value.getDocumentChanges()) {
+                switch (dc.getType()) {
+                    case ADDED:
+                        QueryDocumentSnapshot document = dc.getDocument();
+                        Comment c = new Comment();
+                        c.setId(document.getId());
+                        c.setContent(document.getString("content"));
+                        c.setUserId(document.getString("userId"));
+                        c.setPostId(document.getString("postId"));
+                        comments.add(0, c);
+                        postCommentsLiveData.setValue(comments);
+                        break;
+                    case MODIFIED:
+                        break;
+                    case REMOVED:
+                        break;
+                }
+            }
+
+
+        });
     }
     public MutableLiveData<Post> getPostLiveData() {
         return postLiveData;

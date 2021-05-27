@@ -14,7 +14,6 @@ import com.example.socialapp.data.LoginRepository;
  * Required given LoginViewModel has a non-empty constructor
  */
 public class PostViewModelFactory implements ViewModelProvider.Factory {
-    private Application application;
     private String param;
 
 

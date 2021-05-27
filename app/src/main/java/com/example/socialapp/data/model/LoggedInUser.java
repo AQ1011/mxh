@@ -3,7 +3,7 @@ package com.example.socialapp.data.model;
 /**
  * Data class that captures user information for logged in users retrieved from LoginRepository
  */
-public class LoggedInUser {
+public class LoggedInUser extends User {
 
     private String userId;
     private String displayName;

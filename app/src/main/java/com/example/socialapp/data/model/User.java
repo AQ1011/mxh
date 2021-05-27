@@ -2,17 +2,40 @@ package com.example.socialapp.data.model;
 
 import android.net.Uri;
 
+import com.google.type.DateTime;
+
+import java.util.Calendar;
+import java.util.Date;
+
 public class User {
-    private String id;
+    private String uid;
     private String name;
     private Uri avatar;
+    private String email;
+    private Date dateAdded;
 
-    public String getId() {
-        return id;
+    public Date getDateAdded() {
+        return dateAdded;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setDateAdded() {
+        this.dateAdded = Calendar.getInstance().getTime();
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String id) {
+        this.uid = id;
     }
 
     public String getName() {

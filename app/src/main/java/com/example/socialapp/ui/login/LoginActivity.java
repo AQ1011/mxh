@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.example.socialapp.R;
 import com.example.socialapp.ui.main.MainActivity;
+import com.example.socialapp.ui.signup.SignUpActivity;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -43,6 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         final EditText usernameEditText = findViewById(R.id.username);
         final EditText passwordEditText = findViewById(R.id.password);
         final Button loginButton = findViewById(R.id.login);
+        final Button signUpButton = findViewById(R.id.btn_sign_up);
         final ProgressBar loadingProgressBar = findViewById(R.id.loading);
 
         loginViewModel.getLoginFormState().observe(this, new Observer<LoginFormState>() {
@@ -121,6 +123,11 @@ public class LoginActivity extends AppCompatActivity {
                 loginViewModel.login(usernameEditText.getText().toString(),
                         passwordEditText.getText().toString());
             }
+        });
+
+        signUpButton.setOnClickListener(v -> {
+            Intent intent = new Intent(this, SignUpActivity.class);
+            startActivity(intent);
         });
     }
 

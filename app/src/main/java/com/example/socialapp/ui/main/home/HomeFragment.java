@@ -123,8 +123,7 @@ public class HomeFragment extends Fragment implements PostAdapter.onPostListener
                             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             p.setUserId(user.getUid());
                             p.setContent(ed_addPost.getText().toString());
-                            //TODO: do this please!!
-                            //facade.post
+                            facade.addPost(p);
                             al.cancel();
                         });
                     });
@@ -132,7 +131,7 @@ public class HomeFragment extends Fragment implements PostAdapter.onPostListener
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                     p.setUserId(user.getUid());
                     p.setContent(ed_addPost.getText().toString());
-                    db.collection("posts").add(p);
+                    facade.addPost(p);
                     al.cancel();
                 }
             });

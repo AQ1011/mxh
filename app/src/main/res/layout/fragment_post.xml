@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.appcompat.widget.LinearLayoutCompat
+<androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="5dp"
     android:orientation="vertical">
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="5dp"
+        android:orientation="vertical">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
@@ -52,43 +58,70 @@
                 tools:srcCompat="@drawable/ic_launcher_background" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-        <ImageButton
-            android:id="@+id/imageButton_thumbup"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:scaleType="center"
-            android:src="@drawable/ic_baseline_thumb_up_24" />
+            <ImageButton
+                android:id="@+id/imageButton_thumbup"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:backgroundTint="@android:color/transparent"
+                android:scaleType="center"
+                android:src="@drawable/ic_baseline_thumb_up_24" />
 
-        <ImageButton
-            android:id="@+id/imageButton_chatbubble"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            android:scaleType="center"
-            android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
+            <ImageButton
+                android:id="@+id/imageButton_chatbubble"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:backgroundTint="@android:color/transparent"
+                android:scaleType="center"
+                android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
 
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/ed_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:visibility="visible"
+                android:layout_weight="9"/>
+
+            <ImageButton
+                android:id="@+id/ib_send_comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@android:color/transparent"
+                app:srcCompat="@drawable/ic_baseline_send_24" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/side_nav_bar"
+            android:text="Comments"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+            android:textColor="@color/white" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_comments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </androidx.recyclerview.widget.RecyclerView>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/side_nav_bar"
-        android:text="Comments"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-        android:textColor="@color/white" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_comments"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-</androidx.appcompat.widget.LinearLayoutCompat>
+</androidx.core.widget.NestedScrollView>

@@ -27,7 +27,7 @@ import static android.content.ContentValues.TAG;
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
     private ArrayList<Comment> comments;
-    private FirebaseFirestore db;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private onPostListener onPostListener;
 
     public CommentAdapter (ArrayList<Comment> comments){
@@ -58,7 +58,14 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         holder.getComment().setText(comments.get(position).getContent());
-        holder.getUserName().setText(comments.get(position).getUserId());
+        db.collection("users")
+                .whereEqualTo("uid",comments.get(position).getUserId()).get().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()){
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            holder.getUserName().setText(document.getString("email"));
+                        }
+                    }
+        });
 
     }
 
@@ -89,7 +96,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         @Override
         public void onClick(View v) {
-            onPostListener.onPostClick(getAdapterPosition());
+//            onPostListener.onPostClick(getAdapterPosition());
         }
     }
 
