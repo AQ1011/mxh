@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,15 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialapp.Facade;
 import com.example.socialapp.R;
-import com.example.socialapp.data.model.Comment;
+import com.example.socialapp.data.model.ChildComment;
+import com.example.socialapp.data.model.ParentComment;
 import com.example.socialapp.data.model.Post;
-import com.example.socialapp.ui.main.home.HomeFragment;
+import com.example.socialapp.dialogs.AddCommentDialog;
 import com.example.socialapp.ui.main.home.PostAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 
@@ -42,6 +43,7 @@ public class PostFragment extends Fragment {
     CommentAdapter commentAdapter;
     ImageButton ib_send;
     String postId;
+    ImageButton ib_chatBubble;
 
     Facade facade = Facade.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -66,7 +68,9 @@ public class PostFragment extends Fragment {
         avatar = root.findViewById(R.id.iv_post_avatar);
         ed_comment = root.findViewById(R.id.ed_comment);
         ib_send = root.findViewById(R.id.ib_send_comment);
+        ib_chatBubble = root.findViewById(R.id.imageButton_chatbubble);
         ib_send.setOnClickListener(v -> sendComment(v));
+        ib_chatBubble.setOnClickListener(v-> showAddDialog());
         recyclerView = root.findViewById(R.id.rv_comments);
         recyclerView.setNestedScrollingEnabled(false);
         return root;
@@ -75,7 +79,7 @@ public class PostFragment extends Fragment {
     private void sendComment(View v) {
         if(ed_comment.getText().toString().trim().equals(""))
             return;
-        Comment c = new Comment();
+        ChildComment c = new ChildComment();
         c.setContent(ed_comment.getText().toString());
         c.setPostId(postId);
         c.setUserId(user.getUid());
@@ -84,9 +88,9 @@ public class PostFragment extends Fragment {
         ed_comment.clearFocus();
     }
 
-    Observer<ArrayList<Comment>> commentsUpdateObserver = new Observer<ArrayList<Comment>>() {
+    Observer<ArrayList<ChildComment>> commentsUpdateObserver = new Observer<ArrayList<ChildComment>>() {
         @Override
-        public void onChanged(ArrayList<Comment> comments) {
+        public void onChanged(ArrayList<ChildComment> comments) {
             commentAdapter = new CommentAdapter(comments);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(commentAdapter);
@@ -112,5 +116,11 @@ public class PostFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void showAddDialog() {
+        FragmentManager fm = getParentFragmentManager();
+        AddCommentDialog addCommentDialog = AddCommentDialog.newInstance();
+        addCommentDialog.show(fm, "add_comment_dialog");
     }
 }

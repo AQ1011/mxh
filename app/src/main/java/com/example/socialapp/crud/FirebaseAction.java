@@ -1,0 +1,59 @@
+package com.example.socialapp.crud;
+
+import com.example.socialapp.data.model.ChildComment;
+import com.example.socialapp.data.model.ParentComment;
+import com.example.socialapp.data.model.Post;
+import com.google.firebase.firestore.auth.User;
+
+public class FirebaseAction implements IFirebaseAction{
+    private static FirebaseAction firebaseAction;
+
+    public static FirebaseAction getInstance(){
+        if(firebaseAction == null){
+            firebaseAction = new FirebaseAction();
+        }
+        return firebaseAction;
+    }
+
+    public void addPost (Post post){
+        firestore.collection("posts").add(post);
+    }
+
+    public void deletePost (String postId){
+
+    }
+
+    public void addUser (String email, String password){
+        auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
+            com.example.socialapp.data.model.User u = new com.example.socialapp.data.model.User();
+            u.setEmail(email);
+            u.setUid(authResult.getUser().getUid());
+            u.setDateAdded();
+            firestore.collection("users").add(u);
+        });
+    }
+
+    public void deleteUser (String uid){
+
+    }
+
+    public void updateUser (String uid){
+
+    }
+
+    public void updatePassword (User user, String password) {
+        //TODO: implement update user password
+    }
+
+    public void signOut (){
+        auth.signOut();
+    }
+
+    public void addComment(ChildComment childComment){
+        firestore.collection("comments").add(childComment);
+    }
+
+    public void deleteComment() {
+
+    }
+}

@@ -6,7 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.socialapp.data.model.Comment;
+import com.example.socialapp.data.model.ChildComment;
+import com.example.socialapp.data.model.ParentComment;
 import com.example.socialapp.data.model.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -15,9 +16,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Source;
-import com.google.firestore.v1.Document;
 
 import java.util.ArrayList;
 
@@ -25,8 +23,8 @@ import static android.content.ContentValues.TAG;
 
 public class PostViewModel extends ViewModel {
     private MutableLiveData<Post> postLiveData;
-    private MutableLiveData<ArrayList<Comment>> postCommentsLiveData;
-    private ArrayList<Comment> comments;
+    private MutableLiveData<ArrayList<ChildComment>> postCommentsLiveData;
+    private ArrayList<ChildComment> comments;
     private String postId;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -83,7 +81,7 @@ public class PostViewModel extends ViewModel {
                 switch (dc.getType()) {
                     case ADDED:
                         QueryDocumentSnapshot document = dc.getDocument();
-                        Comment c = new Comment();
+                        ChildComment c = new ChildComment();
                         c.setId(document.getId());
                         c.setContent(document.getString("content"));
                         c.setUserId(document.getString("userId"));
@@ -104,7 +102,7 @@ public class PostViewModel extends ViewModel {
     public MutableLiveData<Post> getPostLiveData() {
         return postLiveData;
     }
-    public MutableLiveData<ArrayList<Comment>> getCommentsLiveData() {
+    public MutableLiveData<ArrayList<ChildComment>> getCommentsLiveData() {
         return postCommentsLiveData;
     }
 }

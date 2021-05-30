@@ -1,36 +1,28 @@
 package com.example.socialapp.ui.main.post;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialapp.R;
-import com.example.socialapp.data.model.Comment;
-import com.example.socialapp.data.model.Post;
+import com.example.socialapp.data.model.ChildComment;
+import com.example.socialapp.data.model.ParentComment;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-
-import static android.content.ContentValues.TAG;
 
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
 
-    private ArrayList<Comment> comments;
+    private ArrayList<ChildComment> comments;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private onPostListener onPostListener;
 
-    public CommentAdapter (ArrayList<Comment> comments){
+    public CommentAdapter (ArrayList<ChildComment> comments){
         this.comments = comments;
     }
 
@@ -59,7 +51,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         holder.getComment().setText(comments.get(position).getContent());
         db.collection("users")
-                .whereEqualTo("uid",comments.get(position).getUserId()).get().addOnCompleteListener(task -> {
+                .whereEqualTo("uid", comments.get(position).getUserId()).get().addOnCompleteListener(task -> {
                     if(task.isSuccessful()){
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             holder.getUserName().setText(document.getString("email"));
