@@ -5,29 +5,28 @@ public class ChildComment implements Comment{
     private String userId;
     private String postId;
     private String content;
-    private String imageURL;
 
     @Override
-    public String getPostId() {
-        return null;
-    }
-
     public void setUserId(String userId) {
         this.userId = userId;
     }
 
+    @Override
     public void setPostId(String postId) {
         this.postId = postId;
     }
 
+    @Override
     public void setContent(String content) {
         this.content = content;
     }
 
+    @Override
     public String getId() {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
@@ -39,6 +38,11 @@ public class ChildComment implements Comment{
 
     @Override
     public String getUserId() {
+        return userId;
+    }
+
+    @Override
+    public String getPostId() {
         return postId;
     }
 }

@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.socialapp.Facade;
 import com.example.socialapp.R;
 import com.example.socialapp.data.model.ChildComment;
+import com.example.socialapp.data.model.Comment;
 import com.example.socialapp.data.model.ParentComment;
 import com.example.socialapp.data.model.Post;
 import com.example.socialapp.dialogs.AddCommentDialog;
@@ -38,10 +39,8 @@ public class PostFragment extends Fragment {
     TextView content;
     ImageView imageView;
     ImageView avatar;
-    EditText ed_comment;
     RecyclerView recyclerView;
     CommentAdapter commentAdapter;
-    ImageButton ib_send;
     String postId;
     ImageButton ib_chatBubble;
 
@@ -66,32 +65,17 @@ public class PostFragment extends Fragment {
         content = root.findViewById(R.id.tv_post_content);
         imageView = root.findViewById(R.id.iv_post_image);
         avatar = root.findViewById(R.id.iv_post_avatar);
-        ed_comment = root.findViewById(R.id.ed_comment);
-        ib_send = root.findViewById(R.id.ib_send_comment);
         ib_chatBubble = root.findViewById(R.id.imageButton_chatbubble);
-        ib_send.setOnClickListener(v -> sendComment(v));
         ib_chatBubble.setOnClickListener(v-> showAddDialog());
         recyclerView = root.findViewById(R.id.rv_comments);
         recyclerView.setNestedScrollingEnabled(false);
         return root;
     }
 
-    private void sendComment(View v) {
-        if(ed_comment.getText().toString().trim().equals(""))
-            return;
-        ChildComment c = new ChildComment();
-        c.setContent(ed_comment.getText().toString());
-        c.setPostId(postId);
-        c.setUserId(user.getUid());
-        facade.addComment(c);
-        ed_comment.setText("");
-        ed_comment.clearFocus();
-    }
-
-    Observer<ArrayList<ChildComment>> commentsUpdateObserver = new Observer<ArrayList<ChildComment>>() {
+    Observer<ArrayList<Comment>> commentsUpdateObserver = new Observer<ArrayList<Comment>>() {
         @Override
-        public void onChanged(ArrayList<ChildComment> comments) {
-            commentAdapter = new CommentAdapter(comments);
+        public void onChanged(ArrayList<Comment> comments) {
+            commentAdapter = new CommentAdapter(comments, getContext());
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(commentAdapter);
         }
@@ -120,7 +104,7 @@ public class PostFragment extends Fragment {
 
     private void showAddDialog() {
         FragmentManager fm = getParentFragmentManager();
-        AddCommentDialog addCommentDialog = AddCommentDialog.newInstance();
+        AddCommentDialog addCommentDialog = AddCommentDialog.newInstance(postId,1);
         addCommentDialog.show(fm, "add_comment_dialog");
     }
 }

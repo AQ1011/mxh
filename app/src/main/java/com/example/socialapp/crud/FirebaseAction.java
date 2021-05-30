@@ -1,6 +1,7 @@
 package com.example.socialapp.crud;
 
 import com.example.socialapp.data.model.ChildComment;
+import com.example.socialapp.data.model.Comment;
 import com.example.socialapp.data.model.ParentComment;
 import com.example.socialapp.data.model.Post;
 import com.google.firebase.firestore.auth.User;
@@ -16,13 +17,20 @@ public class FirebaseAction implements IFirebaseAction{
     }
 
     public void addPost (Post post){
-        firestore.collection("posts").add(post);
+        firestore.collection("posts").add(post).addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                String Id = task.getResult().getId();
+                task.getResult().getParent().document(Id).update("id",Id);
+            }
+        });
     }
 
     public void deletePost (String postId){
 
     }
-
+    public String getCurrentUser() {
+        return auth.getCurrentUser().getUid();
+    }
     public void addUser (String email, String password){
         auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
             com.example.socialapp.data.model.User u = new com.example.socialapp.data.model.User();
@@ -49,7 +57,7 @@ public class FirebaseAction implements IFirebaseAction{
         auth.signOut();
     }
 
-    public void addComment(ChildComment childComment){
+    public void addComment(Comment childComment){
         firestore.collection("comments").add(childComment);
     }
 

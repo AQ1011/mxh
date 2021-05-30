@@ -8,16 +8,19 @@ public class ParentComment implements Comment{
     private String postId;
     private String content;
     private String imageURL;
-    ArrayList<ChildComment> child;
+    ArrayList<Comment> child;
 
-    public ArrayList<ChildComment> getChild() {
+    public ArrayList<Comment> getChild() {
         return child;
     }
 
-    public void setChild(ArrayList<ChildComment> child) {
+    public void setChild(ArrayList<Comment> child) {
         this.child = child;
     }
 
+    public ArrayList<Comment> getChildren() {
+        return child;
+    }
     public ParentComment(String userId, String postId, String content) {
         this.userId = userId;
         this.postId = postId;
@@ -54,16 +57,8 @@ public class ParentComment implements Comment{
         this.content = content;
     }
 
-    public void setImageURL(String imageURL) {
-        this.imageURL = imageURL;
-    }
-
     public String getPostId() {
         return postId;
-    }
-
-    public String getImageURL() {
-        return imageURL;
     }
 
     public void AddChild(ChildComment childComment) {

@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.socialapp.data.model.ChildComment;
+import com.example.socialapp.data.model.Comment;
 import com.example.socialapp.data.model.ParentComment;
 import com.example.socialapp.data.model.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,8 +24,8 @@ import static android.content.ContentValues.TAG;
 
 public class PostViewModel extends ViewModel {
     private MutableLiveData<Post> postLiveData;
-    private MutableLiveData<ArrayList<ChildComment>> postCommentsLiveData;
-    private ArrayList<ChildComment> comments;
+    private MutableLiveData<ArrayList<Comment>> postCommentsLiveData;
+    private ArrayList<Comment> comments;
     private String postId;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -81,7 +82,7 @@ public class PostViewModel extends ViewModel {
                 switch (dc.getType()) {
                     case ADDED:
                         QueryDocumentSnapshot document = dc.getDocument();
-                        ChildComment c = new ChildComment();
+                        Comment c = new ChildComment();
                         c.setId(document.getId());
                         c.setContent(document.getString("content"));
                         c.setUserId(document.getString("userId"));
@@ -102,7 +103,7 @@ public class PostViewModel extends ViewModel {
     public MutableLiveData<Post> getPostLiveData() {
         return postLiveData;
     }
-    public MutableLiveData<ArrayList<ChildComment>> getCommentsLiveData() {
+    public MutableLiveData<ArrayList<Comment>> getCommentsLiveData() {
         return postCommentsLiveData;
     }
 }

@@ -7,8 +7,10 @@ import com.example.socialapp.crud.FirebaseAction;
 import com.example.socialapp.crud.FirebaseCommentDecorator;
 import com.example.socialapp.crud.FirebaseDecorator;
 import com.example.socialapp.data.model.ChildComment;
+import com.example.socialapp.data.model.Comment;
 import com.example.socialapp.data.model.ParentComment;
 import com.example.socialapp.data.model.Post;
+import com.example.socialapp.data.model.User;
 import com.example.socialapp.ui.login.LoginActivity;
 
 public class Facade {
@@ -31,7 +33,7 @@ public class Facade {
         firebaseAction.addUser(username,password);
     }
 
-    public void addComment(ChildComment childComment){
+    public void addComment(Comment childComment){
         firebaseAction.addComment(childComment);
     }
 
@@ -46,8 +48,12 @@ public class Facade {
         activity.finish();
     }
 
-    public void addChildToComment(String parentId, ChildComment child) {
+    public void addChildToComment(String parentId, Comment child) {
         FirebaseCommentDecorator fb = new FirebaseCommentDecorator(firebaseAction);
         fb.addChildToComment(parentId, child);
+    }
+
+    public String getCurrentUserId() {
+        return firebaseAction.getCurrentUser();
     }
 }
