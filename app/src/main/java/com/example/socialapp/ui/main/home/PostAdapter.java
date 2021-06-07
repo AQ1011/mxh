@@ -8,12 +8,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.socialapp.Facade;
 import com.example.socialapp.R;
 import com.example.socialapp.data.model.Post;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -30,6 +33,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private ArrayList<Post> posts;
     private FirebaseFirestore db;
     private onPostListener onPostListener;
+    Facade facade = Facade.getInstance();
 
     public PostAdapter (ArrayList<Post> posts, onPostListener onPostListener){
         this.posts = posts;
@@ -76,7 +80,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         holder.getContentText().setText(posts.get(position).toString());
         new DownloadImageTask(holder.getImageView())
                 .execute(posts.get(position).getImageUrl());
-
+        holder.getLikebtn().setText(String.valueOf(posts.get(position).getLike()));
+        holder.getLikebtn().setOnClickListener(v -> {
+            facade.likePost(posts.get(position).getPostId());
+            holder.getLikebtn().setText(String.valueOf(Long.valueOf(holder.getLikebtn().getText().toString())+1));
+        });
     }
 
     public static Drawable LoadImageFromWebOperations(String url) {
@@ -95,6 +103,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         final TextView userName;
         final ImageView imageView;
         final ImageView avatar;
+        final Button likebtn;
 
         onPostListener onPostListener;
 
@@ -105,6 +114,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             imageView = itemView.findViewById(R.id.iv_post_image);
             avatar = itemView.findViewById(R.id.iv_post_avatar);
             userName = itemView.findViewById(R.id.tv_post_username);
+            likebtn = itemView.findViewById(R.id.button_thumbup);
             this.onPostListener = onPostListener;
 
             itemView.setOnClickListener(this);
@@ -125,6 +135,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         public ImageView getAvatar() {
             return this.avatar;
         }
+
+        public Button getLikebtn() {return this.likebtn; }
 
         @Override
         public void onClick(View v) {

@@ -66,7 +66,6 @@ public class HomeFragment extends Fragment implements PostAdapter.onPostListener
         db = FirebaseFirestore.getInstance();
 
         recyclerView = root.findViewById(R.id.rv_posts);
-
         return root;
     }
 

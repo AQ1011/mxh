@@ -44,10 +44,11 @@ public class PostViewModel extends ViewModel {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             Post p = new Post();
-                            p.setId(document.getId());
+                            p.setPostId(document.getId());
                             p.setContent(document.getString("content"));
                             p.setUserId(document.getString("userId"));
                             p.setImageUrl(document.get("imageUrl").toString());
+                            p.setLike(document.getLong("like"));
                             postLiveData.setValue(p);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
@@ -82,12 +83,24 @@ public class PostViewModel extends ViewModel {
                 switch (dc.getType()) {
                     case ADDED:
                         QueryDocumentSnapshot document = dc.getDocument();
-                        Comment c = new ChildComment();
-                        c.setId(document.getId());
-                        c.setContent(document.getString("content"));
-                        c.setUserId(document.getString("userId"));
-                        c.setPostId(document.getString("postId"));
-                        comments.add(0, c);
+                        if(document.get("children") == null) {
+                            Comment c = new ChildComment();
+                            c.setId(document.getId());
+                            c.setContent(document.getString("content"));
+                            c.setUserId(document.getString("userId"));
+                            c.setPostId(document.getString("postId"));
+                            comments.add(0, c);
+                        }
+                        else {
+                            ParentComment c = new ParentComment();
+                            c.setId(document.getId());
+                            c.setContent(document.getString("content"));
+                            c.setUserId(document.getString("userId"));
+                            c.setPostId(document.getString("postId"));
+                            ArrayList<DocumentReference> children = (ArrayList<DocumentReference>)(document.get("children"));
+                            c.setChildren(children);
+                            comments.add(0, c);
+                        }
                         postCommentsLiveData.setValue(comments);
                         break;
                     case MODIFIED:

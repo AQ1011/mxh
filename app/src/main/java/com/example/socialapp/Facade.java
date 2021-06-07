@@ -6,12 +6,14 @@ import android.content.Intent;
 import com.example.socialapp.crud.FirebaseAction;
 import com.example.socialapp.crud.FirebaseCommentDecorator;
 import com.example.socialapp.crud.FirebaseDecorator;
+import com.example.socialapp.crud.LikeDecorator;
 import com.example.socialapp.data.model.ChildComment;
 import com.example.socialapp.data.model.Comment;
 import com.example.socialapp.data.model.ParentComment;
 import com.example.socialapp.data.model.Post;
 import com.example.socialapp.data.model.User;
 import com.example.socialapp.ui.login.LoginActivity;
+import com.google.firebase.firestore.DocumentReference;
 
 public class Facade {
     FirebaseAction firebaseAction;
@@ -55,5 +57,10 @@ public class Facade {
 
     public String getCurrentUserId() {
         return firebaseAction.getCurrentUser();
+    }
+
+    public void likePost(String postId){
+        LikeDecorator ld = new LikeDecorator(firebaseAction);
+        ld.likePost(postId);
     }
 }

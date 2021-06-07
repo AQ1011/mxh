@@ -32,7 +32,9 @@
                 android:id="@+id/tv_post_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="username" />
+                android:layout_marginLeft="5dp"
+                android:text="username"
+                android:textColor="@color/teal_700" />
 
         </LinearLayout>
 
@@ -45,8 +47,10 @@
                 android:id="@+id/tv_post_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:paddingBottom="10dp"
-                android:text="Hello world" />
+                android:text="Hello world"
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_post_image"
@@ -61,14 +65,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageButton
-                android:id="@+id/imageButton_thumbup"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+            <Button
+                android:id="@+id/button_thumbup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="@android:color/transparent"
-                android:scaleType="center"
-                android:src="@drawable/ic_baseline_thumb_up_24" />
+                android:background="@android:color/transparent"
+                android:drawableRight="@drawable/ic_baseline_thumb_up_24"
+                android:text="0" />
 
             <ImageButton
                 android:id="@+id/imageButton_chatbubble"

@@ -1,6 +1,7 @@
 package com.example.socialapp.dialogs;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,13 +18,18 @@ import com.example.socialapp.Facade;
 import com.example.socialapp.R;
 import com.example.socialapp.data.model.ChildComment;
 import com.example.socialapp.data.model.Comment;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-public class AddCommentDialog extends DialogFragment {
+public class AddCommentDialog extends BottomSheetDialogFragment {
     EditText edAddComment;
     ImageButton ibSend;
     Facade facade = Facade.getInstance();
 
-    public AddCommentDialog() {
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     public static AddCommentDialog newInstance(String postId, int type){
@@ -38,10 +44,8 @@ public class AddCommentDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dialog_add_comment, container);
+        return inflater.inflate(R.layout.dialog_add_comment, container, false);
     }
-
-
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -81,7 +85,14 @@ public class AddCommentDialog extends DialogFragment {
     }
 
     private void addReplyToComment(String postId) {
-
+        if(edAddComment.getText().toString().equals("")) {
+            return;
+        }
+        Comment c = new ChildComment();
+        c.setPostId(postId);
+        c.setUserId(facade.getCurrentUserId());
+        c.setContent(edAddComment.getText().toString());
+        facade.addChildToComment(postId, c);
     }
 
 }

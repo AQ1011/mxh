@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -26,6 +27,7 @@ import com.example.socialapp.data.model.ParentComment;
 import com.example.socialapp.data.model.Post;
 import com.example.socialapp.dialogs.AddCommentDialog;
 import com.example.socialapp.ui.main.home.PostAdapter;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,6 +45,7 @@ public class PostFragment extends Fragment {
     CommentAdapter commentAdapter;
     String postId;
     ImageButton ib_chatBubble;
+    Button likebtn;
 
     Facade facade = Facade.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -65,6 +68,8 @@ public class PostFragment extends Fragment {
         content = root.findViewById(R.id.tv_post_content);
         imageView = root.findViewById(R.id.iv_post_image);
         avatar = root.findViewById(R.id.iv_post_avatar);
+        likebtn = root.findViewById(R.id.button_thumbup);
+        likebtn.setOnClickListener(v -> likePost());
         ib_chatBubble = root.findViewById(R.id.imageButton_chatbubble);
         ib_chatBubble.setOnClickListener(v-> showAddDialog());
         recyclerView = root.findViewById(R.id.rv_comments);
@@ -88,6 +93,7 @@ public class PostFragment extends Fragment {
             content.setText(post.getContent());
             new PostAdapter.DownloadImageTask(imageView)
                     .execute(post.getImageUrl());
+            likebtn.setText(String.valueOf(post.getLike()));
         }
     };
 
@@ -103,8 +109,16 @@ public class PostFragment extends Fragment {
     }
 
     private void showAddDialog() {
-        FragmentManager fm = getParentFragmentManager();
+        FragmentManager fm = getChildFragmentManager();
         AddCommentDialog addCommentDialog = AddCommentDialog.newInstance(postId,1);
         addCommentDialog.show(fm, "add_comment_dialog");
+//        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
+//        bottomSheetDialog.setContentView(R.layout.dialog_add_comment);
+//        bottomSheetDialog.show();
+    }
+
+    private void likePost() {
+            facade.likePost(postId);
+            likebtn.setText(String.valueOf(Long.valueOf(likebtn.getText().toString())+1));
     }
 }

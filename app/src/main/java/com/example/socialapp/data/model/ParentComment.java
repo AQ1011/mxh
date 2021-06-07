@@ -1,31 +1,33 @@
 package com.example.socialapp.data.model;
 
+import com.google.firebase.firestore.DocumentReference;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ParentComment implements Comment{
     private String id;
     private String userId;
     private String postId;
     private String content;
-    private String imageURL;
-    ArrayList<Comment> child;
+    ArrayList<DocumentReference> children;
 
-    public ArrayList<Comment> getChild() {
-        return child;
+    public ParentComment() {
+        this.children = new ArrayList<>();
     }
 
-    public void setChild(ArrayList<Comment> child) {
-        this.child = child;
+    public void setChildren(ArrayList<DocumentReference> children) {
+        this.children = children;
     }
 
-    public ArrayList<Comment> getChildren() {
-        return child;
+    public ArrayList<DocumentReference> getChildren() {
+        return children;
     }
-    public ParentComment(String userId, String postId, String content) {
+    public ParentComment(String userId, String postId, String content, ArrayList<DocumentReference> children) {
         this.userId = userId;
         this.postId = postId;
         this.content = content;
-        this.child = new ArrayList<>();
+        this.children = new ArrayList<>();
     }
     @Override
     public String getContent() {
@@ -61,7 +63,7 @@ public class ParentComment implements Comment{
         return postId;
     }
 
-    public void AddChild(ChildComment childComment) {
-        child.add(childComment);
+    public void AddChild(DocumentReference childComment) {
+        children.add(childComment);
     }
 }
