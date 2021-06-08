@@ -1,11 +1,18 @@
 package com.example.socialapp.crud;
 
+import android.util.Log;
+
 import com.example.socialapp.data.model.ChildComment;
 import com.example.socialapp.data.model.Comment;
 import com.example.socialapp.data.model.ParentComment;
 import com.example.socialapp.data.model.Post;
+import com.example.socialapp.ui.main.home.PostAdapter;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.auth.User;
+
+import static android.content.ContentValues.TAG;
 
 public class FirebaseAction implements IFirebaseAction{
     private static FirebaseAction firebaseAction;
@@ -29,6 +36,7 @@ public class FirebaseAction implements IFirebaseAction{
     public String getCurrentUser() {
         return auth.getCurrentUser().getUid();
     }
+
 
     public void addUser (String email, String password){
         auth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {

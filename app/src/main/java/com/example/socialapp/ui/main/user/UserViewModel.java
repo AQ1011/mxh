@@ -1,4 +1,6 @@
 package com.example.socialapp.ui.main.user;
 
-public class UserViewModel {
+import androidx.lifecycle.ViewModel;
+
+public class UserViewModel extends ViewModel {
 }

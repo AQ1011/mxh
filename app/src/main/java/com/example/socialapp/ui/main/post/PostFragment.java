@@ -16,6 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,6 +28,7 @@ import com.example.socialapp.data.model.Comment;
 import com.example.socialapp.data.model.ParentComment;
 import com.example.socialapp.data.model.Post;
 import com.example.socialapp.dialogs.AddCommentDialog;
+import com.example.socialapp.ui.main.home.HomeFragmentDirections;
 import com.example.socialapp.ui.main.home.PostAdapter;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
@@ -65,6 +68,8 @@ public class PostFragment extends Fragment {
         postViewModel.getCommentsLiveData().observe(getViewLifecycleOwner(),commentsUpdateObserver);
 
         username = root.findViewById(R.id.tv_post_username);
+        username.setOnClickListener(v -> usernameClick());
+
         content = root.findViewById(R.id.tv_post_content);
         imageView = root.findViewById(R.id.iv_post_image);
         avatar = root.findViewById(R.id.iv_post_avatar);
@@ -80,7 +85,7 @@ public class PostFragment extends Fragment {
     Observer<ArrayList<Comment>> commentsUpdateObserver = new Observer<ArrayList<Comment>>() {
         @Override
         public void onChanged(ArrayList<Comment> comments) {
-            commentAdapter = new CommentAdapter(comments, getContext());
+            commentAdapter = new CommentAdapter(comments, getContext(), getView());
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(commentAdapter);
         }
@@ -93,6 +98,8 @@ public class PostFragment extends Fragment {
             content.setText(post.getContent());
             new PostAdapter.DownloadImageTask(imageView)
                     .execute(post.getImageUrl());
+            new PostAdapter.DownloadImageTask(avatar)
+                    .execute(post.getImageUrl());
             likebtn.setText(String.valueOf(post.getLike()));
         }
     };
@@ -103,6 +110,8 @@ public class PostFragment extends Fragment {
             if(task.isSuccessful()){
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     username.setText(document.getString("email"));
+                    new PostAdapter.DownloadImageTask(avatar)
+                            .execute(document.getString("avatar"));
                 }
             }
         });
@@ -120,5 +129,11 @@ public class PostFragment extends Fragment {
     private void likePost() {
             facade.likePost(postId);
             likebtn.setText(String.valueOf(Long.valueOf(likebtn.getText().toString())+1));
+    }
+
+    private void usernameClick() {
+        NavDirections action = PostFragmentDirections.actionPostFragmentToUserPostFragment()
+                .setUserId(postViewModel.getPostLiveData().getValue().getUserId());
+        Navigation.findNavController(getView()).navigate(action);
     }
 }

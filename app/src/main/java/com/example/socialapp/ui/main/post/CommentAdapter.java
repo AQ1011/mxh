@@ -1,5 +1,6 @@
 package com.example.socialapp.ui.main.post;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialapp.R;
@@ -19,6 +22,8 @@ import com.example.socialapp.data.model.ChildComment;
 import com.example.socialapp.data.model.Comment;
 import com.example.socialapp.data.model.ParentComment;
 import com.example.socialapp.dialogs.AddCommentDialog;
+import com.example.socialapp.ui.main.home.HomeFragmentDirections;
+import com.example.socialapp.ui.main.userpost.UserPostFragmentDirections;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,10 +41,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private onPostListener onPostListener;
     private Context context;
+    private View view;
 
-    public CommentAdapter (ArrayList<Comment> comments, Context context){
+    public CommentAdapter (ArrayList<Comment> comments, Context context, View view){
         this.comments = comments;
         this.context = context;
+        this.view = view;
     }
 
     @NonNull
@@ -83,6 +90,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 TextView usn = v.findViewById(R.id.tv_comment_username);
                 TextView cm = v.findViewById(R.id.tv_comment_comment);
                 children.get(i).get().addOnCompleteListener(task -> {
+
                     cm.setText(task.getResult().getString("content"));
                     FirebaseFirestore.getInstance().collection("users")
                             .whereEqualTo("uid",task.getResult().getString("userId")).get()
@@ -93,6 +101,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 holder.getLinearLayout().addView(v);
             }
         }
+        holder.getUserName().setOnClickListener(v2 -> {
+            NavDirections action = PostFragmentDirections.actionPostFragmentToUserPostFragment()
+                    .setUserId(comments.get(position).getUserId());
+            Navigation.findNavController(view).navigate(action);
+        });
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {

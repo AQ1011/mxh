@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="10dp"
+    android:layout_marginTop="10dp"
     android:gravity="end"
     android:orientation="vertical"
     android:padding="5dp">
@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:padding="2.5dp"
         android:text="username"
-        android:textColor="@color/teal_700" />
+        android:textColor="@color/teal_700"
+        android:textSize="12sp" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,11 +39,12 @@
                 android:id="@+id/tv_comment_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:padding="2.5dp"
                 android:paddingStart="10dp"
                 android:text="Hohohohohoho"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                android:textSize="18sp" />
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"

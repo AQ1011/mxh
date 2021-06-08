@@ -1,5 +1,6 @@
 package com.example.socialapp.ui.main.post;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -47,7 +48,7 @@ public class PostViewModel extends ViewModel {
                             p.setPostId(document.getId());
                             p.setContent(document.getString("content"));
                             p.setUserId(document.getString("userId"));
-                            p.setImageUrl(document.get("imageUrl").toString());
+                            p.setImageUrl(document.getString("imageUrl"));
                             p.setLike(document.getLong("like"));
                             postLiveData.setValue(p);
                         } else {
