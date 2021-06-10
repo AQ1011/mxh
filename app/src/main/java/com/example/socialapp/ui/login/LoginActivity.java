@@ -29,6 +29,9 @@ import com.example.socialapp.ui.signup.SignUpActivity;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 
+import org.conscrypt.Conscrypt;
+import java.security.Security;
+
 public class LoginActivity extends AppCompatActivity {
 
     private LoginViewModel loginViewModel;
@@ -37,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        Security.insertProviderAt(Conscrypt.newProvider(), 1);
         loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
                 .get(LoginViewModel.class);
 

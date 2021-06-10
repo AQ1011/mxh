@@ -6,4 +6,14 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_changepassword"
+        android:orderInCategory="100"
+        android:title="Change Password"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_editProfile"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"
+        app:showAsAction="never" />
 </menu>
