@@ -1,11 +1,15 @@
 package com.example.socialapp.crud;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import com.example.socialapp.data.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
@@ -13,6 +17,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
+
+import io.grpc.Context;
 
 public class FirebaseProfileDecorator extends FirebaseDecorator {
     public FirebaseProfileDecorator(IFirebaseAction firebaseAction) {
@@ -67,5 +77,39 @@ public class FirebaseProfileDecorator extends FirebaseDecorator {
                         }
                     }
                 });
+    }
+
+    public void changeProfilePicture(Bitmap picture) {
+        StorageReference storageRef = storage.getReference();
+        StorageReference profilePicRef = storageRef.child("images/" + auth.getCurrentUser().getUid() + ".jpg");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        picture.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] data = baos.toByteArray();
+
+        UploadTask uploadTask = profilePicRef.putBytes(data);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(task -> {
+                    if(task.isSuccessful()) {
+                        firestore.collection("users")
+                                .whereEqualTo("uid", auth.getCurrentUser().getUid()).get()
+                                .addOnCompleteListener(task1 -> {
+                                    if(task1.isSuccessful()) {
+                                        String id = task1.getResult().getDocuments().get(0).getId();
+                                        taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(uri -> {
+                                            firestore.collection("users").document(id).update("avatar", uri.toString());
+                                        });
+                                    }
+                                });
+                    }
+                });
+            }
+        });
     }
 }

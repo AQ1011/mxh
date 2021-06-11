@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment implements PostAdapter.onPostListener
     Observer<ArrayList<Post>> postsUpdateObserver = new Observer<ArrayList<Post>>() {
         @Override
         public void onChanged(ArrayList<Post> posts) {
-            postAdapter = new PostAdapter(posts, HomeFragment.this::onPostClick);
+            postAdapter = new PostAdapter(posts, HomeFragment.this::onPostClick, getContext());
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(postAdapter);
         }
@@ -86,11 +86,11 @@ public class HomeFragment extends Fragment implements PostAdapter.onPostListener
         StorageReference storageRef = storage.getReference();
 
         AlertDialog al = new AlertDialog.Builder(this.getContext())
-            .setTitle("Add new Post").create();
+            .setTitle("Thêm bài mới").create();
 
         al.setView(View.inflate(this.getContext(),R.layout.dialog_add_post,null));
 
-        MenuItem add = menu.add(0,0,0,"New post");
+        MenuItem add = menu.add(0,0,0,"Thêm bài mới");
         add.setOnMenuItemClickListener(item -> {
             al.show();
             imageUri = null;
@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment implements PostAdapter.onPostListener
             imageButton.setOnClickListener(v -> {
                 Intent pickPhoto = new Intent(Intent.ACTION_PICK,
                         android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(pickPhoto , 1);//one can be replaced with any action code
+                startActivityForResult(pickPhoto , 1);
             });
             btn_addPost.setOnClickListener(v -> {
                 Post p = new Post();
@@ -132,7 +132,7 @@ public class HomeFragment extends Fragment implements PostAdapter.onPostListener
                     al.cancel();
                 }
             });
-            Toast.makeText(this.getContext(), "New post", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this.getContext(), "New post", Toast.LENGTH_SHORT).show();
             return true;
         });
     }

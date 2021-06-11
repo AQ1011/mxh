@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginTop="56dp">
 
     <RelativeLayout
         android:id="@+id/rellay1"
@@ -20,18 +21,25 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/circle_border">
 
-            <ImageView
-                android:id="@+id/imageViewAvatar"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_margin="9dp"
-                android:adjustViewBounds="true"
-                android:background="@drawable/circle"
-                android:padding="3dp"
-                android:scaleType="centerInside"
-                android:src="@drawable/ic_baseline_send_24" />
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:elevation="10dp"
+                app:cardCornerRadius="500px"
+                app:strokeColor="@color/darkgray"
+                app:strokeWidth="5px">
 
+                <ImageView
+                    android:id="@+id/imageViewAvatar"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_baseline_face_24"
+                    tools:srcCompat="@drawable/ic_baseline_face_24" />
+            </com.google.android.material.card.MaterialCardView>
         </RelativeLayout>
+
 
         <TextView
             android:id="@+id/tv_name"
@@ -58,17 +66,6 @@
             android:textColor="@color/address"
             android:textSize="14sp" />
 
-        <ImageView
-            android:id="@+id/imageViewSettings"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerInside"
-            android:src="@drawable/ic_settings" />
-
     </RelativeLayout>
 
     <LinearLayout
@@ -85,8 +82,8 @@
             android:layout_weight="1"
             android:background="@color/followersBg"
             android:gravity="center"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -122,8 +119,8 @@
             android:layout_weight="1"
             android:background="@color/followingBg"
             android:gravity="center"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp">
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -165,8 +162,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
             android:layout_marginTop="20dp"
+            android:layout_marginRight="30dp"
             android:orientation="vertical">
 
             <LinearLayout

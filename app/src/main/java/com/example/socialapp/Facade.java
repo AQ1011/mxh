@@ -2,6 +2,7 @@ package com.example.socialapp;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 
 import com.example.socialapp.crud.FirebaseAction;
 import com.example.socialapp.crud.FirebaseCommentDecorator;
@@ -83,5 +84,10 @@ public class Facade {
     {
         FirebaseProfileDecorator profileDecorator = new FirebaseProfileDecorator(firebaseAction);
         profileDecorator.changePassword(email, currPass, newPass);
+    }
+
+    public void changeProfilePicture(Bitmap picture){
+        FirebaseProfileDecorator profileDecorator = new FirebaseProfileDecorator(firebaseAction);
+        profileDecorator.changeProfilePicture(picture);
     }
 }

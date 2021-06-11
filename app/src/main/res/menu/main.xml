@@ -9,11 +9,11 @@
     <item
         android:id="@+id/action_changepassword"
         android:orderInCategory="100"
-        android:title="Change Password"
+        android:title="Đổi mật khẩu"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_editProfile"
         android:orderInCategory="100"
-        android:title="Edit Profile"
+        android:title="Cập nhật thông tin"
         app:showAsAction="never" />
 </menu>

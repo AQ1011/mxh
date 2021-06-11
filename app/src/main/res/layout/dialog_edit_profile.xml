@@ -1,63 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:padding="10dp"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp">
 
     <TextView
-        android:textStyle="bold"
-        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:textColor="#f0f0"
-        android:textSize="26sp"
+        android:padding="10dp"
         android:text="Cập nhật thông tin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:textColor="@color/darkgray"
+        android:textSize="26sp"
+        android:textStyle="bold" />
 
     <EditText
-        android:layout_marginTop="15dp"
         android:id="@+id/editTextNameEdit"
-        android:hint="Name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/ed_rounded"
+        android:hint="Tên"
+        android:padding="10dp"
+        android:paddingStart="20dp" />
 
     <EditText
-        android:layout_marginTop="15dp"
         android:id="@+id/editTextEmailEdit"
-        android:hint="Email"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
+        android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:background="@drawable/ed_rounded"
+        android:hint="Tên hiển thị"
+        android:padding="10dp"
+        android:paddingStart="20dp" />
+
+    <EditText
         android:id="@+id/editTextPhoneEdit"
-        android:hint="Phone"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <EditText
+        android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
+        android:background="@drawable/ed_rounded"
+        android:hint="SĐT"
+        android:padding="10dp"
+        android:paddingStart="20dp" />
+
+    <EditText
         android:id="@+id/editTextAddressEdit"
-        android:hint="Address"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/ed_rounded"
+        android:hint="Địa chỉ"
+        android:padding="10dp"
+        android:paddingStart="20dp" />
 
     <LinearLayout
-        android:layout_marginTop="15dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
 
         <Button
-            android:layout_weight="1"
             android:id="@+id/buttonXacNhan"
-            android:text="Xác nhận"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/ed_rounded"
+            android:text="Xác nhận"
+            android:textColor="@color/white" />
 
         <Button
-            android:layout_weight="1"
             android:id="@+id/buttonHuyEdit"
-            android:text="Hủy"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_weight="1"
+            android:background="@drawable/ed_rounded"
+            android:text="Hủy"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </LinearLayout>

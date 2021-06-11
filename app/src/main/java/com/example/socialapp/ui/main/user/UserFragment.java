@@ -32,6 +32,7 @@ import com.example.socialapp.data.LoginDataSource;
 import com.example.socialapp.data.LoginRepository;
 import com.example.socialapp.data.model.LoggedInUser;
 import com.example.socialapp.data.model.User;
+import com.example.socialapp.ui.main.home.PostAdapter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthCredential;
@@ -83,16 +84,18 @@ public class UserFragment extends Fragment {
                 txtBirthday.setText(task.getResult().getDocuments().get(0).getString("birthday"));
                 txtWork.setText(task.getResult().getDocuments().get(0).getString("work"));
                 txtAddress.setText(task.getResult().getDocuments().get(0).getString("address"));
+                facade.getUser(user.getUid()).addOnSuccessListener(documentSnapshots -> {
+                   String url = documentSnapshots.getDocuments().get(0).getString("avatar");
+                    new PostAdapter.DownloadImageTask(imgViewAvatar)
+                            .execute(url);
+                });
             }
         });
         imgViewAvatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //creating a popup menu
                 PopupMenu popup = new PopupMenu(getContext(), v);
-                //inflating menu from xml resource
                 popup.inflate(R.menu.photo);
-                //adding click listener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
@@ -111,9 +114,7 @@ public class UserFragment extends Fragment {
                         }
                     }
                 });
-                //displaying the popup
                 popup.show();
-                Toast.makeText(getActivity(), "okk ne", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -135,12 +136,12 @@ public class UserFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId() == R.id.action_editProfile) {
-            Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), "ok", Toast.LENGTH_SHORT).show();
             showDialog();
         }
         if(item.getItemId() == R.id.action_changepassword)
         {
-            Toast.makeText(getActivity(), "change password", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getActivity(), "change password", Toast.LENGTH_SHORT).show();
             showDialogChangePass();
 
         }
@@ -149,7 +150,7 @@ public class UserFragment extends Fragment {
 
     public void showDialog()
     {
-        Dialog dialog = new Dialog(getActivity());
+        Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_Light_NoTitleBar_Fullscreen);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_edit_profile);
 
@@ -177,8 +178,7 @@ public class UserFragment extends Fragment {
                 }
                 else
                 {
-                    //facade.updateProfile(new User(uid, name, phone, email, address)); dữ liệu ở đây
-                    // h muốn truyền vào update
+                    //facade.updateProfile(new User(uid, name, phone, email, address));
                     User u = new User();
                     u.setUid(uid);
                     u.setName(name);
@@ -204,7 +204,7 @@ public class UserFragment extends Fragment {
 
     public void showDialogChangePass()
     {
-        Dialog dialog = new Dialog(getActivity());
+        Dialog dialog = new Dialog(getActivity(),android.R.style.Theme_Light_NoTitleBar_Fullscreen);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.dialog_change_password);
 
@@ -222,17 +222,26 @@ public class UserFragment extends Fragment {
                 String uid              = user.getUid();
                 String currPass         = edtCurrPass.getText().toString();
                 String newPass          = edtNewPass.getText().toString();
+                String newPass2         = edtNewPass2.getText().toString();
 
                 if(currPass.equals(" ") || newPass.equals(" "))
                 {
                     Toast.makeText(getActivity(), "Vui lòng nhập đầy đủ!" + uid, Toast.LENGTH_SHORT).show();
+                    return;
                 }
-                else
+                if(currPass.length()<6 || newPass.length()<6)
                 {
-                    facade.changePass(email, currPass, newPass);
-                    Toast.makeText(getActivity(), "Đã cập nhật!.", Toast.LENGTH_SHORT).show();
-                    dialog.dismiss();
+                    Toast.makeText(getActivity(), "Mật khẩu phải dài hơn 6 ký tự" + uid, Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                if(!newPass.equals(newPass2))
+                {
+                    Toast.makeText(getActivity(), "Mật khẩu không giống" + uid, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                facade.changePass(email, currPass, newPass);
+                Toast.makeText(getActivity(), "Đã cập nhật!.", Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
             }
         });
 
@@ -255,6 +264,7 @@ public class UserFragment extends Fragment {
         if(requestCode == REQUEST_CODE_CAMERA && resultCode == RESULT_OK && data != null) {
             Bitmap bitmap = (Bitmap) data.getExtras().get("data");
             imgViewAvatar.setImageBitmap(bitmap);
+            facade.changeProfilePicture(bitmap);
         }
 
         if(requestCode == REQUEST_CODE_FOLDER && resultCode == RESULT_OK && data != null) {
@@ -264,6 +274,7 @@ public class UserFragment extends Fragment {
                 InputStream inputStream = getActivity().getContentResolver().openInputStream(uri);
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                 imgViewAvatar.setImageBitmap(bitmap);
+                facade.changeProfilePicture(bitmap);
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();

@@ -1,5 +1,6 @@
 package com.example.socialapp.ui.main.home;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.socialapp.Facade;
 import com.example.socialapp.R;
 import com.example.socialapp.data.model.Post;
+import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
@@ -33,11 +36,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
     private ArrayList<Post> posts;
     private FirebaseFirestore db;
     private onPostListener onPostListener;
+    private Context context;
     Facade facade = Facade.getInstance();
 
-    public PostAdapter (ArrayList<Post> posts, onPostListener onPostListener){
+    public PostAdapter (ArrayList<Post> posts, onPostListener onPostListener, Context context){
         this.posts = posts;
         this.onPostListener = onPostListener;
+        this.context = context;
     }
 
     @NonNull
@@ -78,6 +83,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             }
         });
         holder.getContentText().setText(posts.get(position).toString());
+
+//        ImageView imgView = new ImageView(context);
+//        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
+//                , ViewGroup.LayoutParams.WRAP_CONTENT);
+//        imgView.setLayoutParams(lp);
+//        new DownloadImageTask(imgView)
+//                .execute(posts.get(position).getImageUrl());
+//        holder.getLl().addView(imgView);
         new DownloadImageTask(holder.getImageView())
                 .execute(posts.get(position).getImageUrl());
         holder.getLikebtn().setText(String.valueOf(posts.get(position).getLike()));
@@ -104,6 +117,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         final ImageView imageView;
         final ImageView avatar;
         final Button likebtn;
+        final LinearLayout ll;
 
         onPostListener onPostListener;
 
@@ -115,6 +129,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             avatar = itemView.findViewById(R.id.iv_post_avatar);
             userName = itemView.findViewById(R.id.tv_post_username);
             likebtn = itemView.findViewById(R.id.button_thumbup);
+            ll = itemView.findViewById(R.id.ll_post_content);
             this.onPostListener = onPostListener;
 
             itemView.setOnClickListener(this);
@@ -137,6 +152,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
         }
 
         public Button getLikebtn() {return this.likebtn; }
+
+        public LinearLayout getLl() {
+            return ll;
+        }
 
         @Override
         public void onClick(View v) {

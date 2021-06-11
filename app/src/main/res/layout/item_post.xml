@@ -48,7 +48,8 @@
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.LinearLayoutCompat
+        <LinearLayout
+            android:id="@+id/ll_post_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -69,7 +70,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitCenter"
                 tools:srcCompat="@drawable/ic_launcher_background" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
+        </LinearLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
             android:layout_width="match_parent"
