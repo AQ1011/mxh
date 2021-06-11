@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -12,22 +13,28 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialapp.Facade;
 import com.example.socialapp.R;
+import com.example.socialapp.data.model.ChildComment;
 import com.example.socialapp.data.model.Comment;
+import com.example.socialapp.data.model.ParentComment;
 import com.example.socialapp.data.model.Post;
-import com.example.socialapp.ui.main.home.HomeFragment;
+import com.example.socialapp.dialogs.AddCommentDialog;
+import com.example.socialapp.ui.main.home.HomeFragmentDirections;
 import com.example.socialapp.ui.main.home.PostAdapter;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 
@@ -37,11 +44,11 @@ public class PostFragment extends Fragment {
     TextView content;
     ImageView imageView;
     ImageView avatar;
-    EditText ed_comment;
     RecyclerView recyclerView;
     CommentAdapter commentAdapter;
-    ImageButton ib_send;
     String postId;
+    ImageButton ib_chatBubble;
+    Button likebtn;
 
     Facade facade = Facade.getInstance();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -61,33 +68,24 @@ public class PostFragment extends Fragment {
         postViewModel.getCommentsLiveData().observe(getViewLifecycleOwner(),commentsUpdateObserver);
 
         username = root.findViewById(R.id.tv_post_username);
+        username.setOnClickListener(v -> usernameClick());
+
         content = root.findViewById(R.id.tv_post_content);
         imageView = root.findViewById(R.id.iv_post_image);
         avatar = root.findViewById(R.id.iv_post_avatar);
-        ed_comment = root.findViewById(R.id.ed_comment);
-        ib_send = root.findViewById(R.id.ib_send_comment);
-        ib_send.setOnClickListener(v -> sendComment(v));
+        likebtn = root.findViewById(R.id.button_thumbup);
+        likebtn.setOnClickListener(v -> likePost());
+        ib_chatBubble = root.findViewById(R.id.imageButton_chatbubble);
+        ib_chatBubble.setOnClickListener(v-> showAddDialog());
         recyclerView = root.findViewById(R.id.rv_comments);
         recyclerView.setNestedScrollingEnabled(false);
         return root;
     }
 
-    private void sendComment(View v) {
-        if(ed_comment.getText().toString().trim().equals(""))
-            return;
-        Comment c = new Comment();
-        c.setContent(ed_comment.getText().toString());
-        c.setPostId(postId);
-        c.setUserId(user.getUid());
-        facade.addComment(c);
-        ed_comment.setText("");
-        ed_comment.clearFocus();
-    }
-
     Observer<ArrayList<Comment>> commentsUpdateObserver = new Observer<ArrayList<Comment>>() {
         @Override
         public void onChanged(ArrayList<Comment> comments) {
-            commentAdapter = new CommentAdapter(comments);
+            commentAdapter = new CommentAdapter(comments, getContext(), getView());
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setAdapter(commentAdapter);
         }
@@ -100,6 +98,9 @@ public class PostFragment extends Fragment {
             content.setText(post.getContent());
             new PostAdapter.DownloadImageTask(imageView)
                     .execute(post.getImageUrl());
+            new PostAdapter.DownloadImageTask(avatar)
+                    .execute(post.getImageUrl());
+            likebtn.setText(String.valueOf(post.getLike()));
         }
     };
 
@@ -109,8 +110,30 @@ public class PostFragment extends Fragment {
             if(task.isSuccessful()){
                 for (QueryDocumentSnapshot document : task.getResult()) {
                     username.setText(document.getString("email"));
+                    new PostAdapter.DownloadImageTask(avatar)
+                            .execute(document.getString("avatar"));
                 }
             }
         });
+    }
+
+    private void showAddDialog() {
+        FragmentManager fm = getChildFragmentManager();
+        AddCommentDialog addCommentDialog = AddCommentDialog.newInstance(postId,1);
+        addCommentDialog.show(fm, "add_comment_dialog");
+//        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
+//        bottomSheetDialog.setContentView(R.layout.dialog_add_comment);
+//        bottomSheetDialog.show();
+    }
+
+    private void likePost() {
+            facade.likePost(postId);
+            likebtn.setText(String.valueOf(Long.valueOf(likebtn.getText().toString())+1));
+    }
+
+    private void usernameClick() {
+        NavDirections action = PostFragmentDirections.actionPostFragmentToUserPostFragment()
+                .setUserId(postViewModel.getPostLiveData().getValue().getUserId());
+        Navigation.findNavController(getView()).navigate(action);
     }
 }

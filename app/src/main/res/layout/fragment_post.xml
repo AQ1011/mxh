@@ -1,124 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="5dp"
+    android:background="@color/grayish"
+    android:foregroundTint="@android:color/transparent"
     android:orientation="vertical">
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="5dp"
+        android:layout_marginTop="56dp"
+        android:backgroundTint="@android:color/transparent"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            tools:layout_editor_absoluteX="-16dp"
-            tools:layout_editor_absoluteY="2dp">
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="5dp">
 
-            <ImageView
-                android:id="@+id/iv_post_avatar"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
-
-                android:scaleType="fitXY"
-                tools:srcCompat="@tools:sample/avatars" />
-
-            <TextView
-                android:id="@+id/tv_post_username"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="username" />
-
-        </LinearLayout>
-
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_post_content"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:text="Hello world" />
-
-            <ImageView
-                android:id="@+id/iv_post_image"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                tools:srcCompat="@drawable/ic_launcher_background" />
-        </androidx.appcompat.widget.LinearLayoutCompat>
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                tools:layout_editor_absoluteX="-16dp"
+                tools:layout_editor_absoluteY="2dp">
 
-        <androidx.appcompat.widget.LinearLayoutCompat
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:elevation="10dp"
+                    app:cardCornerRadius="500px"
+                    app:strokeColor="@color/darkgray"
+                    app:strokeWidth="5px">
 
-            <ImageButton
-                android:id="@+id/imageButton_thumbup"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:backgroundTint="@android:color/transparent"
-                android:scaleType="center"
-                android:src="@drawable/ic_baseline_thumb_up_24" />
+                    <ImageView
+                        android:id="@+id/iv_post_avatar"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:scaleType="centerCrop"
+                        app:srcCompat="@drawable/ic_baseline_face_24"
+                        tools:srcCompat="@drawable/ic_baseline_face_24" />
+                </com.google.android.material.card.MaterialCardView>
 
-            <ImageButton
-                android:id="@+id/imageButton_chatbubble"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:backgroundTint="@android:color/transparent"
-                android:scaleType="center"
-                android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
+                <TextView
+                    android:id="@+id/tv_post_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="username"
+                    android:textColor="@color/teal_700" />
 
-        </androidx.appcompat.widget.LinearLayoutCompat>
+            </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/ed_comment"
-                android:layout_width="wrap_content"
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:inputType="textPersonName"
-                android:visibility="visible"
-                android:layout_weight="9"/>
+                android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/ib_send_comment"
-                android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/tv_post_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:paddingBottom="10dp"
+                    android:text="Hello world"
+                    android:textSize="18sp" />
+
+                <ImageView
+                    android:id="@+id/iv_post_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    tools:srcCompat="@drawable/ic_launcher_background" />
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:backgroundTint="@android:color/transparent"
-                app:srcCompat="@drawable/ic_baseline_send_24" />
+                android:orientation="horizontal"
+                android:weightSum="2">
+
+                <Button
+                    android:id="@+id/button_thumbup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:drawableRight="@drawable/ic_baseline_thumb_up_24"
+                    android:text="0" />
+
+                <ImageButton
+                    android:id="@+id/imageButton_chatbubble"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:backgroundTint="@android:color/transparent"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_baseline_chat_bubble_outline_24" />
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
         </LinearLayout>
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/side_nav_bar"
-            android:text="Comments"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-            android:textColor="@color/white" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_comments"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@color/white">
 
         </androidx.recyclerview.widget.RecyclerView>
     </androidx.appcompat.widget.LinearLayoutCompat>

@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
 
             case R.id.nav_sign_out: {
-//                Facade.getInstance().signOut(this);
+                Facade.getInstance().signOut(this);
                 break;
             }
         }

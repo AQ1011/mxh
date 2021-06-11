@@ -20,19 +20,31 @@
             tools:layout_editor_absoluteX="-16dp"
             tools:layout_editor_absoluteY="2dp">
 
-            <ImageView
-                android:id="@+id/iv_post_avatar"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:elevation="10dp"
+                app:cardCornerRadius="500px"
+                app:strokeColor="@color/darkgray"
+                app:strokeWidth="5px">
 
-                android:scaleType="fitXY"
-                tools:srcCompat="@tools:sample/avatars" />
+                <ImageView
+                    android:id="@+id/iv_post_avatar"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/ic_baseline_face_24"
+                    tools:srcCompat="@drawable/ic_baseline_face_24" />
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:id="@+id/tv_post_username"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="username" />
+                android:layout_marginLeft="5dp"
+                android:text="username"
+                android:textColor="@color/teal_700" />
 
         </LinearLayout>
 
@@ -45,8 +57,10 @@
                 android:id="@+id/tv_post_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:paddingBottom="10dp"
-                android:text="Hello world" />
+                android:text="Hello world"
+                android:textSize="18sp" />
 
             <ImageView
                 android:id="@+id/iv_post_image"
@@ -61,14 +75,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <ImageButton
-                android:id="@+id/imageButton_thumbup"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
+            <Button
+                android:id="@+id/button_thumbup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="@android:color/transparent"
-                android:scaleType="center"
-                android:src="@drawable/ic_baseline_thumb_up_24" />
+                android:background="@android:color/transparent"
+                android:drawableRight="@drawable/ic_baseline_thumb_up_24"
+                android:text="0" />
 
             <ImageButton
                 android:id="@+id/imageButton_chatbubble"

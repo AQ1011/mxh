@@ -10,10 +10,32 @@ import java.util.Date;
 public class User {
     private String uid;
     private String name;
+    private String phone;
+    private String address;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public void setDateAdded(Date dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
     private Uri avatar;
     private String email;
     private Date dateAdded;
-
     public Date getDateAdded() {
         return dateAdded;
     }

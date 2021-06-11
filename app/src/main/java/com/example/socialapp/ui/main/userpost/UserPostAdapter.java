@@ -1,4 +1,4 @@
-package com.example.socialapp.ui.main.home;
+package com.example.socialapp.ui.main.userpost;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -28,14 +27,14 @@ import java.util.ArrayList;
 
 import static android.content.ContentValues.TAG;
 
-public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
+public class UserPostAdapter extends RecyclerView.Adapter<UserPostAdapter.ViewHolder> {
 
     private ArrayList<Post> posts;
     private FirebaseFirestore db;
     private onPostListener onPostListener;
     Facade facade = Facade.getInstance();
 
-    public PostAdapter (ArrayList<Post> posts, onPostListener onPostListener){
+    public UserPostAdapter(ArrayList<Post> posts, onPostListener onPostListener){
         this.posts = posts;
         this.onPostListener = onPostListener;
     }
@@ -155,10 +154,10 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
             String urldisplay = urls[0];
             Bitmap mIcon11 = null;
             try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
+                InputStream in = new URL(urldisplay).openStream();
                 mIcon11 = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
-                Log.e("Error", e.getMessage() + "");
+                Log.e("Error", e.getMessage());
                 e.printStackTrace();
             }
             return mIcon11;

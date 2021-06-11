@@ -3,7 +3,6 @@ package com.example.socialapp.ui.main.home;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.Observable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -30,7 +29,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialapp.Facade;
 import com.example.socialapp.R;
-import com.example.socialapp.crud.PostActions;
 import com.example.socialapp.data.model.Post;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -68,7 +66,6 @@ public class HomeFragment extends Fragment implements PostAdapter.onPostListener
         db = FirebaseFirestore.getInstance();
 
         recyclerView = root.findViewById(R.id.rv_posts);
-
         return root;
     }
 

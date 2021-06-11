@@ -1,12 +1,15 @@
 package com.example.socialapp.ui.main.post;
 
+import android.net.Uri;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.socialapp.data.model.ChildComment;
 import com.example.socialapp.data.model.Comment;
+import com.example.socialapp.data.model.ParentComment;
 import com.example.socialapp.data.model.Post;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -15,9 +18,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.Source;
-import com.google.firestore.v1.Document;
 
 import java.util.ArrayList;
 
@@ -45,10 +45,11 @@ public class PostViewModel extends ViewModel {
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             Post p = new Post();
-                            p.setId(document.getId());
+                            p.setPostId(document.getId());
                             p.setContent(document.getString("content"));
                             p.setUserId(document.getString("userId"));
-                            p.setImageUrl(document.get("imageUrl").toString());
+                            p.setImageUrl(document.getString("imageUrl"));
+                            p.setLike(document.getLong("like"));
                             postLiveData.setValue(p);
                         } else {
                             Log.w(TAG, "Error getting documents.", task.getException());
@@ -83,12 +84,24 @@ public class PostViewModel extends ViewModel {
                 switch (dc.getType()) {
                     case ADDED:
                         QueryDocumentSnapshot document = dc.getDocument();
-                        Comment c = new Comment();
-                        c.setId(document.getId());
-                        c.setContent(document.getString("content"));
-                        c.setUserId(document.getString("userId"));
-                        c.setPostId(document.getString("postId"));
-                        comments.add(0, c);
+                        if(document.get("children") == null) {
+                            Comment c = new ChildComment();
+                            c.setId(document.getId());
+                            c.setContent(document.getString("content"));
+                            c.setUserId(document.getString("userId"));
+                            c.setPostId(document.getString("postId"));
+                            comments.add(0, c);
+                        }
+                        else {
+                            ParentComment c = new ParentComment();
+                            c.setId(document.getId());
+                            c.setContent(document.getString("content"));
+                            c.setUserId(document.getString("userId"));
+                            c.setPostId(document.getString("postId"));
+                            ArrayList<DocumentReference> children = (ArrayList<DocumentReference>)(document.get("children"));
+                            c.setChildren(children);
+                            comments.add(0, c);
+                        }
                         postCommentsLiveData.setValue(comments);
                         break;
                     case MODIFIED:
