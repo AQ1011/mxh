@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.example.socialapp.crud.FirebaseAction;
 import com.example.socialapp.crud.FirebaseCommentDecorator;
 import com.example.socialapp.crud.FirebaseDecorator;
+import com.example.socialapp.crud.FirebaseProfileDecorator;
 import com.example.socialapp.crud.LikeDecorator;
 import com.example.socialapp.data.model.ChildComment;
 import com.example.socialapp.data.model.Comment;
@@ -14,6 +15,9 @@ import com.example.socialapp.data.model.Post;
 import com.example.socialapp.data.model.User;
 import com.example.socialapp.ui.login.LoginActivity;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class Facade {
     FirebaseAction firebaseAction;
@@ -62,5 +66,22 @@ public class Facade {
     public void likePost(String postId){
         LikeDecorator ld = new LikeDecorator(firebaseAction);
         ld.likePost(postId);
+    }
+
+    public Task<QuerySnapshot> getUser(String userId) {
+        FirebaseProfileDecorator profileDecorator = new FirebaseProfileDecorator(firebaseAction);
+        return profileDecorator.getUser(userId);
+    }
+
+    public Task<QuerySnapshot> updateProfile(User user)
+    {
+        FirebaseProfileDecorator profileDecorator = new FirebaseProfileDecorator(firebaseAction);
+        return profileDecorator.updateProfile(user);
+    }
+
+    public void changePass(String email, String currPass, String newPass)
+    {
+        FirebaseProfileDecorator profileDecorator = new FirebaseProfileDecorator(firebaseAction);
+        profileDecorator.changePassword(email, currPass, newPass);
     }
 }
