@@ -33,7 +33,7 @@ public class SignUpActivity extends Activity {
                 finish();
             }
             else {
-                Toast.makeText(this, "Sai rồi con trai", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Vui lòng nhập đúng thông tin", Toast.LENGTH_SHORT).show();
             }
         });
     }
