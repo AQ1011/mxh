@@ -67,8 +67,10 @@ public class UserPostFragment extends Fragment implements UserPostAdapter.onPost
             if(u!= null) {
                 user = u;
                 username.setText(u.getEmail());
-                new UserPostAdapter.DownloadImageTask(avatar)
-                        .execute(u.getAvatar().toString());
+                if(u.getAvatar()!= null) {
+                    new UserPostAdapter.DownloadImageTask(avatar)
+                            .execute(u.getAvatar().toString());
+                }
             }
         }
     };

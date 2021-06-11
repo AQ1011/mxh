@@ -47,7 +47,9 @@ public class UserPostViewModel extends ViewModel {
             if(task.isSuccessful()){
                 DocumentSnapshot doc = task.getResult().getDocuments().get(0);
                 User u = new User();
-                u.setAvatar(Uri.parse(doc.getString("avatar")));
+                if(doc.getString("avatar") != null) {
+                    u.setAvatar(Uri.parse(doc.getString("avatar")));
+                }
                 u.setUid(doc.getString("uid"));
                 u.setEmail(doc.getString("email"));
                 userLiveData.setValue(u);

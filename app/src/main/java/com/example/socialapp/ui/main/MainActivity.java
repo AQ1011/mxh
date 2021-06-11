@@ -19,12 +19,12 @@ import com.example.socialapp.Facade;
 import com.example.socialapp.R;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     NavigationView navigationView;
     DrawerLayout drawer;
-
+    NavController navController;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +41,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 R.id.nav_home)
                 .setOpenableLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        navigationView.setNavigationItemSelectedListener(this::onNavigationItemSelected);
     }
 
     @Override
@@ -60,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 || super.onSupportNavigateUp();
     }
 
-    @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
 
@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 break;
             }
         }
+        NavigationUI.onNavDestinationSelected(item,navController);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

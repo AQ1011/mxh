@@ -46,14 +46,14 @@
 
     <EditText
         android:id="@+id/password2"
-        android:layout_width="363dp"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:autofillHints="@string/prompt_password"
         android:background="@drawable/ed_rounded"
-        android:hint="@string/prompt_password"
+        android:hint="Confirm password"
         android:imeActionLabel="@string/action_sign_in_short"
         android:imeOptions="actionDone"
         android:inputType="textPassword"
